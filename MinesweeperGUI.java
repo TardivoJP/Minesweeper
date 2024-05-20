@@ -85,11 +85,11 @@ public class MinesweeperGUI extends JFrame {
         }
 
         if (board[x][y] == 1) {
+            gameOver = true;
             setAllVisible();
             updateButtons();
             timer.stop();
             JOptionPane.showMessageDialog(this, "BOOOOOOM! Game Over!");
-            gameOver = true;
         } else {
             if (dangerBoard[x][y] != '0') {
                 visible[x][y] = true;
@@ -112,11 +112,11 @@ public class MinesweeperGUI extends JFrame {
         }
 
         if (trueMines == 0 && minesInfo == 0) {
+            gameOver = true;
             setAllVisible();
             updateButtons();
             timer.stop();
             JOptionPane.showMessageDialog(this, "Congratulations! You win!");
-            gameOver = true;
         } else {
             mineCounterLabel.setText("Mines: " + (minesInfo < 0 ? 0 : minesInfo));
             updateButtons();
@@ -191,7 +191,7 @@ public class MinesweeperGUI extends JFrame {
     }
 
     private void updateButtons() {
-        Font font = new Font("Arial", Font.BOLD, 16);  // or any other font you prefer
+        Font font = new Font("Arial", Font.BOLD, 16);
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -199,7 +199,9 @@ public class MinesweeperGUI extends JFrame {
 
                 if (flags[i][j]) {
                     buttons[i][j].setText("F");
+                    if(gameOver) buttons[i][j].setText(dangerBoard[i][j] == '*' ? "F" : ""+dangerBoard[i][j]);
                     buttons[i][j].setBackground(Color.RED);
+                    if(gameOver) buttons[i][j].setBackground(dangerBoard[i][j] == '*' ? Color.RED : Color.ORANGE);
                     buttons[i][j].setForeground(Color.BLACK);
                 } else if (visible[i][j]) {
                     char value = dangerBoard[i][j];
